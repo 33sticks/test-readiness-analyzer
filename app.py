@@ -66,90 +66,66 @@ async def discovery() -> Dict[str, Any]:
         "functions": [
             {
                 "name": "test_readiness_analyzer",
-                "display_name": "Test Readiness Analyzer",
-                "description": "Analyzes A/B test proposals for statistical validity, hypothesis quality, and design best practices",
-                "version": "1.0.0",
-                "provider": "33 Sticks",
-                "endpoint": "/analyze",
-                "method": "POST",
+                "description": "Analyzes A/B test proposals for statistical validity, hypothesis quality, and design best practices. Use this when a user wants to evaluate if their experiment is ready to launch.",
                 "parameters": [
                     {
                         "name": "hypothesis",
                         "type": "string",
-                        "required": True,
                         "description": "The test hypothesis describing what you want to test and why",
-                        "validation": {
-                            "min_length": 10
-                        }
+                        "required": True
                     },
                     {
                         "name": "baseline_conversion_rate",
                         "type": "number",
-                        "required": True,
                         "description": "Current baseline conversion rate (0-1)",
-                        "validation": {
-                            "minimum": 0.0,
-                            "maximum": 1.0
-                        }
+                        "required": True
                     },
                     {
                         "name": "minimum_detectable_effect",
                         "type": "number",
-                        "required": True,
                         "description": "Minimum detectable effect you want to measure (0-1)",
-                        "validation": {
-                            "minimum": 0.0,
-                            "maximum": 1.0
-                        }
+                        "required": True
                     },
                     {
                         "name": "daily_traffic",
                         "type": "integer",
-                        "required": True,
                         "description": "Daily traffic volume for the test",
-                        "validation": {
-                            "minimum": 1
-                        }
+                        "required": True
                     },
                     {
                         "name": "number_of_variations",
                         "type": "integer",
-                        "required": False,
-                        "default": 1,
                         "description": "Number of test variations (including control)",
-                        "validation": {
-                            "minimum": 1
-                        }
+                        "required": False
                     },
                     {
                         "name": "primary_metric",
                         "type": "string",
-                        "required": True,
-                        "description": "Primary success metric for the test"
+                        "description": "Primary success metric for the test",
+                        "required": True
                     },
                     {
                         "name": "secondary_metrics",
                         "type": "array",
-                        "required": False,
                         "description": "Additional metrics to track during the test",
-                        "items": {
-                            "type": "string"
-                        }
+                        "required": False
                     },
                     {
                         "name": "test_start_date",
                         "type": "string",
-                        "required": False,
                         "description": "Planned test start date (ISO format)",
-                        "format": "date-time"
+                        "required": False
                     }
-                ]
+                ],
+                "endpoint": "/analyze",
+                "http_method": "POST",
+                "auth_requirements": []
             }
         ]
     }
 
 
-@app.post("https://web-production-68892.up.railway.app/analyze")
+@app.post("/analyze")
 async def analyze_test_proposal(proposal: TestProposal) -> AnalysisResult:
     """
     Analyze a test proposal for readiness.
