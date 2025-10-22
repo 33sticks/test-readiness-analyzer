@@ -149,7 +149,7 @@ async def discovery() -> Dict[str, Any]:
     }
 
 
-@app.post("/analyze")
+@app.post("https://web-production-68892.up.railway.app/analyze")
 async def analyze_test_proposal(proposal: TestProposal) -> AnalysisResult:
     """
     Analyze a test proposal for readiness.
