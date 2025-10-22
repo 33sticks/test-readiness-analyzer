@@ -5,9 +5,10 @@ A comprehensive tool for analyzing A/B test proposals, providing statistical
 validation, hypothesis scoring, and design recommendations.
 """
 
+import json
 import logging
 from typing import Dict, Any, List
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -126,12 +127,12 @@ async def discovery() -> Dict[str, Any]:
 
 
 @app.post("/analyze")
-async def analyze_test_proposal(proposal: TestProposal) -> AnalysisResult:
+async def analyze_test_proposal(request: Request) -> AnalysisResult:
     """
     Analyze a test proposal for readiness.
     
     Args:
-        proposal: TestProposal object containing test parameters
+        request: FastAPI Request object containing test parameters
     
     Returns:
         AnalysisResult with comprehensive analysis
@@ -140,6 +141,9 @@ async def analyze_test_proposal(proposal: TestProposal) -> AnalysisResult:
         HTTPException: If analysis fails
     """
     try:
+        body = await request.json()
+        logger.info(f"Raw request body received: {json.dumps(body, indent=2)}")
+        proposal = TestProposal(**body)
         logger.info(f"Analyzing test proposal: {proposal.hypothesis[:50]}...")
         
         # Perform statistical analysis
