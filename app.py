@@ -63,7 +63,7 @@ async def discovery() -> Dict[str, Any]:
     logger.info("Discovery endpoint requested")
     
     return {
-        "tools": [
+        "functions": [
             {
                 "name": "test_readiness_analyzer",
                 "display_name": "Test Readiness Analyzer",
