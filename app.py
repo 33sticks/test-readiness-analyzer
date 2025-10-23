@@ -143,7 +143,7 @@ async def analyze_test_proposal(request: Request) -> AnalysisResult:
     try:
         body = await request.json()
         logger.info(f"Raw request body received: {json.dumps(body, indent=2)}")
-        proposal = TestProposal(**body)
+        proposal = TestProposal(**body["parameters"])
         logger.info(f"Analyzing test proposal: {proposal.hypothesis[:50]}...")
         
         # Perform statistical analysis
